@@ -10,6 +10,10 @@ import (
 	"github.com/gocolly/colly"
 )
 
+func getCountryForCity(cityName string) string {
+	return cityName
+}
+
 type WaitTimeDetails struct {
 	days    int16
 	hasDays bool
@@ -22,7 +26,7 @@ type CityWaitingTime struct {
 	petitionBasedTempWorker WaitTimeDetails
 	crewTransit             WaitTimeDetails
 	businessTourismVisitor  WaitTimeDetails
-	// Country                 string
+	// country                 string
 }
 
 func parseWaitingTime(str string) WaitTimeDetails {
@@ -42,13 +46,15 @@ func main() {
 	c.OnHTML(
 		"div.tsg-rwd-body-frame-row div div.tsg-rwd-main-copy-frame.dataCSIpage div.tsg-rwd-main-copy-body-frame.no-rail.dataCSIpage div.tsg-rwd-content-page-parsysxxx.parsys div.tsg-rwd-text.parbase.section div p table tbody",
 		func(e *colly.HTMLElement) {
-			e.ForEach("tr", func(_ int, e *colly.HTMLElement) {
+			e.ForEach("tr:nth-child(n+2)", func(_ int, el *colly.HTMLElement) {
+				cityName := el.ChildText("td:nth-child(1)")
 				cityWaitTime := CityWaitingTime{
-					e.ChildText("td:nth-child(1)"),
-					parseWaitingTime(e.ChildText("td:nth-child(2)")),
-					parseWaitingTime(e.ChildText("td:nth-child(3)")),
-					parseWaitingTime(e.ChildText("td:nth-child(4)")),
-					parseWaitingTime(e.ChildText("td:nth-child(5)")),
+					cityName,
+					parseWaitingTime(el.ChildText("td:nth-child(2)")),
+					parseWaitingTime(el.ChildText("td:nth-child(3)")),
+					parseWaitingTime(el.ChildText("td:nth-child(4)")),
+					parseWaitingTime(el.ChildText("td:nth-child(5)")),
+					// getCountryForCity(cityName),
 				}
 				cities = append(cities, cityWaitTime)
 			})
