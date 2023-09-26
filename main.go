@@ -14,27 +14,32 @@ func getCountryForCity(cityName string) string {
 	return cityName
 }
 
-type WaitTimeDetails struct {
-	Days    int16
-	hasDays bool
-	Message string
+type Days int16
+type Message string
+
+type WaitingTime struct {
+	Days    *Days    `json:"days,omitempty"`
+	Message *Message `json:"message,omitempty"`
 }
 
 type CityWaitingTime struct {
 	CityName                string
 	Country                 string
-	StudentExchangeVisitor  WaitTimeDetails
-	PetitionBasedTempWorker WaitTimeDetails
-	CrewTransit             WaitTimeDetails
-	BusinessTourismVisitor  WaitTimeDetails
+	StudentExchangeVisitor  WaitingTime
+	PetitionBasedTempWorker WaitingTime
+	CrewTransit             WaitingTime
+	BusinessTourismVisitor  WaitingTime
 }
 
-func parseWaitingTime(str string) WaitTimeDetails {
+func parseWaitingTime(str string) WaitingTime {
 	if v, ok := strconv.Atoi(strings.Split(str, " ")[0]); ok == nil {
-		return WaitTimeDetails{int16(v), true, ""}
-	} else {
-		return WaitTimeDetails{0, false, str}
+		days := Days(int16(v))
+		return WaitingTime{&days, nil}
+	} else if str != "" {
+		message := Message(str)
+		return WaitingTime{nil, &message}
 	}
+	return WaitingTime{nil, nil}
 }
 
 func main() {
