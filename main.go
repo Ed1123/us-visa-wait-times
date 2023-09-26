@@ -15,18 +15,18 @@ func getCountryForCity(cityName string) string {
 }
 
 type WaitTimeDetails struct {
-	days    int16
+	Days    int16
 	hasDays bool
-	message string
+	Message string
 }
 
 type CityWaitingTime struct {
-	cityName                string
-	studentExchangeVisitor  WaitTimeDetails
-	petitionBasedTempWorker WaitTimeDetails
-	crewTransit             WaitTimeDetails
-	businessTourismVisitor  WaitTimeDetails
-	// country                 string
+	CityName                string
+	Country                 string
+	StudentExchangeVisitor  WaitTimeDetails
+	PetitionBasedTempWorker WaitTimeDetails
+	CrewTransit             WaitTimeDetails
+	BusinessTourismVisitor  WaitTimeDetails
 }
 
 func parseWaitingTime(str string) WaitTimeDetails {
@@ -50,11 +50,11 @@ func main() {
 				cityName := el.ChildText("td:nth-child(1)")
 				cityWaitTime := CityWaitingTime{
 					cityName,
+					getCountryForCity(cityName),
 					parseWaitingTime(el.ChildText("td:nth-child(2)")),
 					parseWaitingTime(el.ChildText("td:nth-child(3)")),
 					parseWaitingTime(el.ChildText("td:nth-child(4)")),
 					parseWaitingTime(el.ChildText("td:nth-child(5)")),
-					// getCountryForCity(cityName),
 				}
 				cities = append(cities, cityWaitTime)
 			})
