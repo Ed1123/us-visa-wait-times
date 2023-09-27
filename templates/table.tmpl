@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>US VISA Waiting Times</title>
+    <title>{{.tittle}}</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -15,7 +15,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>US VISA Waiting Times</h1>
+      <h1>{{.tittle}}</h1>
       <table
         id="example"
         class="table table-striped table-bordered"
@@ -28,10 +28,18 @@
           </tr>
         </thead>
         <tbody>
-          {{range .Data}}
+          {{range .data}}
           <tr>
             <td>{{.CityName}}</td>
-            <td>{{.BusinessTourismVisitor}}</td>
+            <td>
+            {{if .BusinessTourismVisitor.Days}}
+            {{.BusinessTourismVisitor.Days}}
+            {{else if .BusinessTourismVisitor.Message}}
+            {{.BusinessTourismVisitor.Message}}
+            {{else}}
+            No data
+            {{end}}
+            </td>
           </tr>
           {{end}}
         </tbody>

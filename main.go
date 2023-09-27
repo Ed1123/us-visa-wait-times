@@ -25,7 +25,7 @@ func main() {
 		// 	return
 		// }
 
-		c.HTML(http.StatusOK, "table.tmpl", gin.H{"Data": cities})
+		c.HTML(http.StatusOK, "table.tmpl", gin.H{"tittle": "US Visa Waiting times", "data": cities})
 	})
 
 	// Start the server
