@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
+	"net/http"
 	"strconv"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 )
 
@@ -42,7 +42,7 @@ func parseWaitingTime(str string) WaitingTime {
 	return WaitingTime{nil, nil}
 }
 
-func main() {
+func GetWaitingData() []CityWaitingTime {
 	c := colly.NewCollector(colly.CacheDir("./us_visa_cache"))
 
 	cities := []CityWaitingTime{}
@@ -71,9 +71,35 @@ func main() {
 
 	c.Visit("https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/global-visa-wait-times.html")
 
-	jsonBytes, err := json.Marshal(cities)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(jsonBytes))
+	// jsonBytes, err := json.Marshal(cities)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(string(jsonBytes))
+	return cities
+}
+
+func main() {
+	router := gin.Default()
+
+	// // Serve static files (CSS and JS)
+	// r.Static("/static", "./static")
+
+	router.LoadHTMLFiles("./templates/table.tmpl")
+
+	cities := GetWaitingData()
+
+	// Define a route to display the table
+	router.GET("/", func(c *gin.Context) {
+		// tmpl, err := template.ParseFiles("templates/table.tmpl")
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		// 	return
+		// }
+
+		c.HTML(http.StatusOK, "table.tmpl", gin.H{"Data": cities})
+	})
+
+	// Start the server
+	router.Run()
 }
