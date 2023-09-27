@@ -10,9 +10,9 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func getCountryForCity(cityName string) string {
-	return cityName
-}
+// func getCountryForCity(cityName string) string {
+// 	return cityName
+// }
 
 type Days int16
 type Message string
@@ -23,8 +23,8 @@ type WaitingTime struct {
 }
 
 type CityWaitingTime struct {
-	CityName                string
-	Country                 string
+	CityName string
+	// Country                 string
 	StudentExchangeVisitor  WaitingTime
 	PetitionBasedTempWorker WaitingTime
 	CrewTransit             WaitingTime
@@ -49,13 +49,13 @@ func main() {
 
 	// Find and visit all links
 	c.OnHTML(
-		"div.tsg-rwd-body-frame-row div div.tsg-rwd-main-copy-frame.dataCSIpage div.tsg-rwd-main-copy-body-frame.no-rail.dataCSIpage div.tsg-rwd-content-page-parsysxxx.parsys div.tsg-rwd-text.parbase.section div p table tbody",
+		"p table tbody",
 		func(e *colly.HTMLElement) {
 			e.ForEach("tr:nth-child(n+2)", func(_ int, el *colly.HTMLElement) {
 				cityName := el.ChildText("td:nth-child(1)")
 				cityWaitTime := CityWaitingTime{
 					cityName,
-					getCountryForCity(cityName),
+					// getCountryForCity(cityName),
 					parseWaitingTime(el.ChildText("td:nth-child(2)")),
 					parseWaitingTime(el.ChildText("td:nth-child(3)")),
 					parseWaitingTime(el.ChildText("td:nth-child(4)")),
