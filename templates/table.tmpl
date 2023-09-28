@@ -16,32 +16,38 @@
   <body>
     <div class="container">
       <h1>{{.tittle}}</h1>
+      <h2>Visitor/Business B1/B2</h2>
       <table
-        id="example"
+        id="table"
         class="table table-striped table-bordered"
         style="width: 100%"
       >
         <thead>
           <tr>
             <th>City</th>
-            <th>Waiting time</th>
+            <th>Average Days</th>
           </tr>
         </thead>
         <tbody>
-          {{range .data}}
+          {{
+            range.data
+          }}
           <tr>
             <td>{{.CityName}}</td>
             <td>
-            {{if .BusinessTourismVisitor.Days}}
-            {{.BusinessTourismVisitor.Days}}
-            {{else if .BusinessTourismVisitor.Message}}
-            {{.BusinessTourismVisitor.Message}}
-            {{else}}
-            No data
-            {{end}}
+              {{if .BusinessTourismVisitor.Days}}
+              {{.BusinessTourismVisitor.Days}}
+              {{/* {{else if .BusinessTourismVisitor.Message}}
+              {{.BusinessTourismVisitor.Message}} */}}
+              {{else}}
+              {{/* No data */}}
+              1000000
+              {{ end }}
             </td>
           </tr>
-          {{end}}
+          {{
+            end
+          }}
         </tbody>
       </table>
     </div>
