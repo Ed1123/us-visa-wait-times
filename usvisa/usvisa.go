@@ -15,35 +15,35 @@ import (
 type Days int16
 type Message string
 
-type WaitingTime struct {
+type WaitTime struct {
 	Days    *Days    `json:"days,omitempty"`
 	Message *Message `json:"message,omitempty"`
 }
 
-type CityWaitingTime struct {
+type CityWaitTime struct {
 	CityName string
 	// Country                 string
-	StudentExchangeVisitor  WaitingTime
-	PetitionBasedTempWorker WaitingTime
-	CrewTransit             WaitingTime
-	BusinessTourismVisitor  WaitingTime
+	StudentExchangeVisitor  WaitTime
+	PetitionBasedTempWorker WaitTime
+	CrewTransit             WaitTime
+	BusinessTourismVisitor  WaitTime
 }
 
-func parseWaitingTime(str string) WaitingTime {
+func parseWaitTime(str string) WaitTime {
 	if v, ok := strconv.Atoi(strings.Split(str, " ")[0]); ok == nil {
 		days := Days(int16(v))
-		return WaitingTime{&days, nil}
+		return WaitTime{&days, nil}
 	} else if str != "" {
 		message := Message(str)
-		return WaitingTime{nil, &message}
+		return WaitTime{nil, &message}
 	}
-	return WaitingTime{nil, nil}
+	return WaitTime{nil, nil}
 }
 
-func GetWaitingData() []CityWaitingTime {
+func GetWaitData() []CityWaitTime {
 	c := colly.NewCollector(colly.CacheDir("./us_visa_cache"))
 
-	cities := []CityWaitingTime{}
+	cities := []CityWaitTime{}
 
 	// Find and visit all links
 	c.OnHTML(
@@ -51,13 +51,13 @@ func GetWaitingData() []CityWaitingTime {
 		func(e *colly.HTMLElement) {
 			e.ForEach("tr:nth-child(n+2)", func(_ int, el *colly.HTMLElement) {
 				cityName := el.ChildText("td:nth-child(1)")
-				cityWaitTime := CityWaitingTime{
+				cityWaitTime := CityWaitTime{
 					cityName,
 					// getCountryForCity(cityName),
-					parseWaitingTime(el.ChildText("td:nth-child(2)")),
-					parseWaitingTime(el.ChildText("td:nth-child(3)")),
-					parseWaitingTime(el.ChildText("td:nth-child(4)")),
-					parseWaitingTime(el.ChildText("td:nth-child(5)")),
+					parseWaitTime(el.ChildText("td:nth-child(2)")),
+					parseWaitTime(el.ChildText("td:nth-child(3)")),
+					parseWaitTime(el.ChildText("td:nth-child(4)")),
+					parseWaitTime(el.ChildText("td:nth-child(5)")),
 				}
 				cities = append(cities, cityWaitTime)
 			})

@@ -1,4 +1,4 @@
-module github.com/Ed1123/us-visa-waiting-times
+module github.com/Ed1123/us-visa-wait-times
 
 go 1.21.1
 
