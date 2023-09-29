@@ -23,11 +23,12 @@ func tableTest(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	toTmpl := struct {
-		Data  []usvisa.CityWaitTime
-		Title string
-	}{cities, "US Visa Wait Times"}
-	tmplErr := tmpl.Execute(w, toTmpl)
+	tmplErr := tmpl.Execute(
+		w, struct {
+			Data  []usvisa.CityWaitTime
+			Title string
+		}{cities, "US Visa Wait Times"},
+	)
 	if tmplErr != nil {
 		log.Fatal(tmplErr)
 	}
