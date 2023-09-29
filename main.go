@@ -1,28 +1,41 @@
 package main
 
 import (
+	"encoding/json"
+	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/Ed1123/us-visa-wait-times/usvisa"
-	"github.com/gin-gonic/gin"
 )
 
+func waitTimes(w http.ResponseWriter, r *http.Request) {
+	cities := usvisa.GetWaitData()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(cities)
+}
+
+func tableTest(w http.ResponseWriter, r *http.Request) {
+	cities := usvisa.GetWaitData()
+	w.Header().Set("Content-Type", "text/html")
+	tmplFile := "templates/table.tmpl"
+	tmpl, err := template.ParseFiles(tmplFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	toTmpl := struct {
+		Data  []usvisa.CityWaitTime
+		Title string
+	}{cities, "US Visa Wait Times"}
+	tmplErr := tmpl.Execute(w, toTmpl)
+	if tmplErr != nil {
+		log.Fatal(tmplErr)
+	}
+}
+
 func main() {
-	router := gin.Default()
+	http.HandleFunc("/table-test", tableTest)
+	http.HandleFunc("/wait-times", waitTimes)
 
-	router.LoadHTMLFiles("./templates/table.tmpl")
-
-	// Define a route to display the table
-	router.GET("/table-test", func(c *gin.Context) {
-		cities := usvisa.GetWaitData()
-		c.HTML(http.StatusOK, "table.tmpl", gin.H{"tittle": "US Visa Wait times", "data": cities})
-	})
-
-	router.GET("/wait-times", func(c *gin.Context) {
-		cities := usvisa.GetWaitData()
-		c.JSON(http.StatusOK, cities)
-	})
-
-	// Start the server
-	router.Run()
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{.tittle}}</title>
+    <title>{{.Title}}</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -15,7 +15,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>{{.tittle}}</h1>
+      <h1>{{.Title}}</h1>
       <h2>Visitor/Business B1/B2</h2>
       <table
         id="table"
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           {{
-            range.data
+            range .Data
           }}
           <tr>
             <td>{{.CityName}}</td>
