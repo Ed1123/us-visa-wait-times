@@ -5,8 +5,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/Ed1123/us-visa-wait-times/usvisa"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 func waitTimes(w http.ResponseWriter, r *http.Request) {
@@ -35,8 +38,11 @@ func tableTest(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/table-test", tableTest)
-	http.HandleFunc("/wait-times", waitTimes)
+	r := mux.NewRouter()
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	r.HandleFunc("/table-test", tableTest)
+	r.HandleFunc("/wait-times", waitTimes)
+
+	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
+	log.Fatal(http.ListenAndServe(":8080", loggedRouter))
 }
