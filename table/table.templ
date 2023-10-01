@@ -1,0 +1,27 @@
+package table
+
+import "github.com/Ed1123/us-visa-wait-times/usvisa"
+import "fmt"
+
+templ Table(cities []usvisa.CityWaitTime) {
+    <table>
+        <thead>
+        <tr>
+            <th>City</th>
+            <th>Wait Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        for _, city := range cities {
+            <tr>
+            <td>{city.CityName}</td>
+            if city.BusinessTourismVisitor.Days != nil {
+                <td>{fmt.Sprint(*city.BusinessTourismVisitor.Days)}</td>
+            } else if city.BusinessTourismVisitor.Message != nil{
+                <td>{string(*city.BusinessTourismVisitor.Message)}</td>
+            }
+            </tr>
+        }
+        </tbody>
+    </table>
+}

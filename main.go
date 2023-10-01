@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Ed1123/us-visa-wait-times/table"
 	"github.com/Ed1123/us-visa-wait-times/usvisa"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -37,12 +38,20 @@ func tableTest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func templTable(w http.ResponseWriter, r *http.Request) {
+	cities := usvisa.GetWaitData()
+	table.Table(cities).Render(r.Context(), w)
+}
+
 func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/table-test", tableTest)
 	r.HandleFunc("/wait-times", waitTimes)
 
+	r.HandleFunc("/table", templTable)
+
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
+
 	log.Fatal(http.ListenAndServe(":8080", loggedRouter))
 }
