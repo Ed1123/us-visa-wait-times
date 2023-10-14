@@ -13,23 +13,24 @@ import (
 type response struct {
 	Features []struct {
 		Geometry struct {
-			Coordinates []float64 `json:"coordinates"`
-		} `json:"geometry"`
+			Coordinates []float64
+		}
 		Properties struct {
 			Components struct {
 				City    string
 				Country string
-			} `json:"components"`
+			}
 			Annotations struct {
 				Flag string
-			} `json:"annotations"`
-		} `json:"properties"`
-	} `json:"features"`
+			}
+		}
+	}
 }
 
 type CityInfo struct {
-	CityName  string
-	Country   string
+	CityName string
+	Country  string
+	//Flag	  string
 	Latitude  float64
 	Longitude float64
 }
@@ -45,7 +46,7 @@ func GetCityInfo(city string) CityInfo {
 	}
 	q := u.Query()
 	q.Add("q", city)
-	q.Add("no_annotations", "1")
+	// q.Add("no_annotations", "1") // uncomment to include flag
 	q.Add("limit", "1")
 	q.Add("key", os.Getenv("OPENCAGE_API_KEY"))
 
@@ -64,8 +65,6 @@ func GetCityInfo(city string) CityInfo {
 	if err := json.Unmarshal(body, &r); err != nil {
 		log.Fatalln("Couldn't unmarshal response", err)
 	}
-
-	// fmt.Println(r.Features[0].Properties.Annotations.Flag)
 
 	return CityInfo{
 		CityName:  city,
