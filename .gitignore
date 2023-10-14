@@ -22,3 +22,4 @@ go.work
 
 us_visa_cache
 .vscode
+.env

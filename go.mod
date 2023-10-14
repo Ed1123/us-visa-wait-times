@@ -7,6 +7,7 @@ require (
 	github.com/gocolly/colly v1.2.0
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
+	github.com/joho/godotenv v1.5.1
 )
 
 require (
