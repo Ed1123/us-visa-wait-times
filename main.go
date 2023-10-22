@@ -20,8 +20,8 @@ func waitTimes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(cities)
 }
 
-func tableTest(w http.ResponseWriter, r *http.Request) {
-	cities := usvisa.GetWaitData()
+func tableJS(w http.ResponseWriter, r *http.Request) {
+	cities := usvisa.GetWaitDataWithCountry()
 	w.Header().Set("Content-Type", "text/html")
 	tmplFile := "templates/table.tmpl"
 	tmpl, err := template.ParseFiles(tmplFile)
@@ -29,10 +29,7 @@ func tableTest(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	tmplErr := tmpl.Execute(
-		w, struct {
-			Data  []usvisa.CityWaitTime
-			Title string
-		}{cities, "US Visa Wait Times"},
+		w, map[string]interface{}{"Data": cities, "Title": "US Visa Wait Times"},
 	)
 	if tmplErr != nil {
 		log.Fatal(tmplErr)
@@ -57,7 +54,7 @@ func main() {
 	}
 	r := mux.NewRouter()
 
-	r.HandleFunc("/table-test", tableTest)
+	r.HandleFunc("/table-js", tableJS)
 	r.HandleFunc("/wait-times", waitTimes)
 	r.HandleFunc("/wait-times-with-country", waitTimesWithCountry)
 

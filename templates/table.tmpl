@@ -26,6 +26,7 @@
           <tr>
             <th>City</th>
             <th>Average Days</th>
+            <th>Country</th>
           </tr>
         </thead>
         <tbody>
@@ -33,10 +34,10 @@
             range .Data
           }}
           <tr>
-            <td>{{.CityName}}</td>
+            <td>{{.CityWaitTime.CityName}}</td>
             <td>
-              {{if .BusinessTourismVisitor.Days}}
-              {{.BusinessTourismVisitor.Days}}
+              {{if .CityWaitTime.BusinessTourismVisitor.Days}}
+              {{.CityWaitTime.BusinessTourismVisitor.Days}}
               {{/* {{else if .BusinessTourismVisitor.Message}}
               {{.BusinessTourismVisitor.Message}} */}}
               {{else}}
@@ -44,6 +45,12 @@
               1000000
               {{ end }}
             </td>
+            <td>
+              {{if .Country}}
+              {{.Country}}
+              {{else}}
+              No data
+              {{ end }}
           </tr>
           {{
             end
