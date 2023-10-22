@@ -11,6 +11,7 @@ import (
 	"github.com/Ed1123/us-visa-wait-times/usvisa"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func waitTimes(w http.ResponseWriter, r *http.Request) {
@@ -43,11 +44,22 @@ func templTable(w http.ResponseWriter, r *http.Request) {
 	table.Table(cities).Render(r.Context(), w)
 }
 
+func waitTimesWithCountry(w http.ResponseWriter, r *http.Request) {
+	cities := usvisa.GetWaitDataWithCountry()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(cities)
+}
+
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	r := mux.NewRouter()
 
 	r.HandleFunc("/table-test", tableTest)
 	r.HandleFunc("/wait-times", waitTimes)
+	r.HandleFunc("/wait-times-with-country", waitTimesWithCountry)
 
 	r.HandleFunc("/table", templTable)
 
