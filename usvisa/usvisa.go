@@ -1,16 +1,13 @@
 package usvisa
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 	"strings"
 
+	cityAPI "github.com/Ed1123/us-visa-wait-times/city-api"
 	"github.com/gocolly/colly"
 )
-
-// func getCountryForCity(cityName string) string {
-// 	return cityName
-// }
 
 type Days int16
 type Message string
@@ -64,15 +61,29 @@ func GetWaitData() []CityWaitTime {
 		})
 
 	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL)
+		log.Println("Visiting", r.URL)
 	})
 
 	c.Visit("https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/global-visa-wait-times.html")
 
-	// jsonBytes, err := json.Marshal(cities)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println(string(jsonBytes))
 	return cities
+}
+
+type CityWaitTimeWithCountry struct {
+	CityWaitTime
+	Country string
+}
+
+func GetWaitDataWithCountry() []CityWaitTimeWithCountry {
+	cites := GetWaitData()
+	citiesWithCountry := []CityWaitTimeWithCountry{}
+	cityInfoCache := cityAPI.NewCityInfoCache()
+	for _, city := range cites {
+		cityInfo := cityInfoCache.GetCityInfo(city.CityName)
+		citiesWithCountry = append(
+			citiesWithCountry,
+			CityWaitTimeWithCountry{city, cityInfo.Country},
+		)
+	}
+	return citiesWithCountry
 }
