@@ -1,4 +1,4 @@
-package cityAPI
+package opencage
 
 import (
 	"log"

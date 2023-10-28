@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	cityAPI "github.com/Ed1123/us-visa-wait-times/city-api"
+	"github.com/Ed1123/us-visa-wait-times/opencage"
 	"github.com/gocolly/colly"
 )
 
@@ -77,7 +77,7 @@ type CityWaitTimeWithCountry struct {
 func GetWaitDataWithCountry() []CityWaitTimeWithCountry {
 	cites := GetWaitData()
 	citiesWithCountry := []CityWaitTimeWithCountry{}
-	cityInfoCache := cityAPI.NewCityInfoCache()
+	cityInfoCache := opencage.NewCityInfoCache()
 	for _, city := range cites {
 		cityInfo := cityInfoCache.GetCityInfo(city.CityName)
 		citiesWithCountry = append(
