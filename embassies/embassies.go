@@ -14,7 +14,7 @@ type ConsulateEmbassy struct {
 }
 
 func getCityFromEmbassyName(embassyName string) string {
-	nameStrings := strings.SplitN(embassyName, " in ", 1)
+	nameStrings := strings.SplitN(embassyName, " in ", 2)
 	if !(len(nameStrings) > 0) {
 		log.Println("Could not split embassy name", embassyName)
 		return ""
