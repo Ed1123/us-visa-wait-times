@@ -1,10 +1,9 @@
-package visaplace
+package embassies
 
 import "testing"
 
 func TestGetConsulatesEmbassies(t *testing.T) {
 	embassies := GetConsulatesEmbassies()
-
 	if len(embassies) == 0 {
 		t.Error("Expected non-empty list of embassies")
 	}
