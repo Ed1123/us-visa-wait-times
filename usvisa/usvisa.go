@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Ed1123/us-visa-wait-times/opencage"
+	"github.com/Ed1123/us-visa-wait-times/embassies"
 	"github.com/gocolly/colly"
 )
 
@@ -69,6 +69,23 @@ func GetWaitData() []CityWaitTime {
 	return cities
 }
 
+type EmbassyInfo struct {
+	cityEmbassyMap map[string]embassies.ConsulateEmbassy
+}
+
+func newEmbassyInfo() EmbassyInfo {
+	embassiesArray := embassies.GetConsulatesEmbassies()
+	cityEmbassyMap := make(map[string]embassies.ConsulateEmbassy)
+	for _, embassy := range embassiesArray {
+		cityEmbassyMap[embassy.City] = embassy
+	}
+	return EmbassyInfo{cityEmbassyMap}
+}
+
+func (e EmbassyInfo) getEmbassy(cityName string) embassies.ConsulateEmbassy {
+	return e.cityEmbassyMap[cityName]
+}
+
 type CityWaitTimeWithCountry struct {
 	CityWaitTime
 	Country string
@@ -77,12 +94,12 @@ type CityWaitTimeWithCountry struct {
 func GetWaitDataWithCountry() []CityWaitTimeWithCountry {
 	cites := GetWaitData()
 	citiesWithCountry := []CityWaitTimeWithCountry{}
-	cityInfoCache := opencage.NewCityInfoCache()
+	embassyInfo := newEmbassyInfo()
 	for _, city := range cites {
-		cityInfo := cityInfoCache.GetCityInfo(city.CityName)
+		embassy := embassyInfo.getEmbassy(city.CityName)
 		citiesWithCountry = append(
 			citiesWithCountry,
-			CityWaitTimeWithCountry{city, cityInfo.Country},
+			CityWaitTimeWithCountry{city, embassy.Country},
 		)
 	}
 	return citiesWithCountry
