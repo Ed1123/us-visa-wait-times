@@ -2,6 +2,7 @@ package usvisa
 
 import (
 	"log"
+	"os"
 	"strconv"
 	"strings"
 
@@ -38,7 +39,10 @@ func parseWaitTime(str string) WaitTime {
 }
 
 func GetWaitData() []CityWaitTime {
-	c := colly.NewCollector(colly.CacheDir("./us_visa_cache"))
+	c := colly.NewCollector()
+	if os.Getenv("ENV") == "dev" {
+		c.CacheDir = "./us_visa_cache"
+	}
 
 	cities := []CityWaitTime{}
 

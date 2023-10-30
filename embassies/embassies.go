@@ -2,6 +2,7 @@ package embassies
 
 import (
 	"log"
+	"os"
 	"strings"
 
 	"github.com/gocolly/colly"
@@ -23,7 +24,10 @@ func getCityFromEmbassyName(embassyName string) string {
 }
 
 func GetConsulatesEmbassies() []ConsulateEmbassy {
-	c := colly.NewCollector(colly.CacheDir("./us_visa_cache"))
+	c := colly.NewCollector()
+	if os.Getenv("ENV") == "dev" {
+		c.CacheDir = "./us_visa_cache"
+	}
 	embassies := []ConsulateEmbassy{}
 	url := "https://www.embassy-worldwide.com/country/united-states"
 
