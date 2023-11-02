@@ -1,0 +1,8 @@
+*/*cache*
+.vscode
+tmp
+.env.sample
+.gitignore
+Dockerfile
+LICENSE
+README.md
