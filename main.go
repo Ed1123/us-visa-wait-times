@@ -50,7 +50,7 @@ func waitTimesWithCountry(w http.ResponseWriter, r *http.Request) {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 	r := mux.NewRouter()
 
@@ -62,5 +62,6 @@ func main() {
 
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
 
+	log.Println("Server started on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", loggedRouter))
 }
