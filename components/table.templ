@@ -1,4 +1,4 @@
-package table
+package components
 
 import "github.com/Ed1123/us-visa-wait-times/usvisa"
 import "fmt"
@@ -24,4 +24,17 @@ templ Table(cities []usvisa.CityWaitTime) {
         }
         </tbody>
     </table>
+}
+
+templ Index() {
+    <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>US Visa Wait Times</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        </head>
+        <body>
+            <ul>
+                <li><a href="/wait-times">Wait Times</a></li>
+                <li><a href="/about">About</a></li>
 }
