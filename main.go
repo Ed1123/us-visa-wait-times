@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Ed1123/us-visa-wait-times/table"
+	"github.com/Ed1123/us-visa-wait-times/components"
 	"github.com/Ed1123/us-visa-wait-times/usvisa"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -23,7 +23,7 @@ func waitTimes(w http.ResponseWriter, r *http.Request) {
 func tableJS(w http.ResponseWriter, r *http.Request) {
 	cities := usvisa.GetWaitDataWithCountry()
 	w.Header().Set("Content-Type", "text/html")
-	tmplFile := "templates/table.tmpl"
+	tmplFile := "templates/table.html"
 	tmpl, err := template.ParseFiles(tmplFile)
 	if err != nil {
 		log.Fatal(err)
@@ -38,7 +38,11 @@ func tableJS(w http.ResponseWriter, r *http.Request) {
 
 func templTable(w http.ResponseWriter, r *http.Request) {
 	cities := usvisa.GetWaitData()
-	table.Table(cities).Render(r.Context(), w)
+	components.Table(cities).Render(r.Context(), w)
+}
+
+func templIndex(w http.ResponseWriter, r *http.Request) {
+	components.Index().Render(r.Context(), w)
 }
 
 func waitTimesWithCountry(w http.ResponseWriter, r *http.Request) {
@@ -58,10 +62,11 @@ func main() {
 	r.HandleFunc("/wait-times", waitTimes)
 	r.HandleFunc("/wait-times-with-country", waitTimesWithCountry)
 
+	r.HandleFunc("/", templIndex)
 	r.HandleFunc("/table", templTable)
 
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
 
-	log.Println("Server started on port 8080")
+	log.Println("Server started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", loggedRouter))
 }

@@ -1,0 +1,56 @@
+package components
+
+import "github.com/Ed1123/us-visa-wait-times/usvisa"
+import "fmt"
+
+templ Table(cities []usvisa.CityWaitTime) {
+	<table>
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Wait Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            for _, city := range cities {
+                <tr>
+                    <td>{ city.CityName }</td>
+                    if city.BusinessTourismVisitor.Days != nil {
+                        <td>{ fmt.Sprint(*city.BusinessTourismVisitor.Days) }</td>
+                    } else if city.BusinessTourismVisitor.Message != nil {
+                        <td>{ string(*city.BusinessTourismVisitor.Message) }</td>
+                    }
+                </tr>
+	        }
+        </tbody>
+    </table>
+}
+
+templ Index() {
+	<html>
+		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>US Visa Wait Times</title>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"/>
+		</head>
+		<body>
+			<h1 class="title">US Visa Wait Times</h1>
+			<p class="subtitle">Wait times for US visa appointments at consulates around the world.</p>
+            <div>
+                <h2 class="subtitle">APIs</h2>
+			    <ul>
+				    <li><a href="/wait-times">Wait Times</a></li>
+				    <li><a href="/wait-times-with-country">Wait Times with Countries</a></li>
+			    </ul>
+            </div>
+            <div>
+                <h2 class="subtitle">Tables</h2>
+			    <ul>
+                    <li><a href="/table-js">Working table from ChatGPT</a></li>
+                    <li><a href="/table">Table made with just Go/Templ</a></li> 
+			    </ul>
+            </div>
+		</body>
+	</html>
+}
+
