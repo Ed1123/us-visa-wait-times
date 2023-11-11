@@ -128,7 +128,7 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</title><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css\"></head><body><header class=\"section\"><div class=\"content\"><h1 class=\"title\">")
+		_, err = templBuffer.WriteString("</title></head><body><header><h1>")
 		if err != nil {
 			return err
 		}
@@ -137,7 +137,7 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</h1><p class=\"subtitle\">")
+		_, err = templBuffer.WriteString("</h1><p>")
 		if err != nil {
 			return err
 		}
@@ -146,7 +146,7 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</p></div></header><section class=\"section\"><div class=\"content\"><h2 class=\"subtitle\">")
+		_, err = templBuffer.WriteString("</p></header><section><div><h2>")
 		if err != nil {
 			return err
 		}
@@ -173,7 +173,7 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</a></li></ul></div><div class=\"content\"><h2 class=\"subtitle\">")
+		_, err = templBuffer.WriteString("</a></li></ul></div><div><h2>")
 		if err != nil {
 			return err
 		}
