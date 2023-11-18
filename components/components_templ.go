@@ -128,12 +128,50 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		_, err = templBuffer.WriteString("</title></head><body><header><h1>")
+		_, err = templBuffer.WriteString("</title><style>")
 		if err != nil {
 			return err
 		}
-		var_9 := `US Visa Wait Times`
+		var_9 := `
+                body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f4f4f4;
+                    color: #333;
+                }
+
+                header {
+                    background-color: #008080;
+                    padding: 20px;
+                    text-align: center;
+                    color: #fff;
+                }
+
+                h1 {
+                    margin: 0;
+                    font-size: 36px;
+                }
+
+                h2 {
+                    margin-top: 10px;
+                    font-size: 24px;
+                }
+
+                section {
+                    padding: 20px;
+                }
+            `
 		_, err = templBuffer.WriteString(var_9)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</style></head><body><header><h1>")
+		if err != nil {
+			return err
+		}
+		var_10 := `US Visa Wait Times`
+		_, err = templBuffer.WriteString(var_10)
 		if err != nil {
 			return err
 		}
@@ -141,8 +179,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_10 := `Wait times for US visa appointments at consulates around the world.`
-		_, err = templBuffer.WriteString(var_10)
+		var_11 := `Wait times for US visa appointments at consulates around the world.`
+		_, err = templBuffer.WriteString(var_11)
 		if err != nil {
 			return err
 		}
@@ -150,8 +188,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_11 := `APIs`
-		_, err = templBuffer.WriteString(var_11)
+		var_12 := `APIs`
+		_, err = templBuffer.WriteString(var_12)
 		if err != nil {
 			return err
 		}
@@ -159,8 +197,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_12 := `Wait Times`
-		_, err = templBuffer.WriteString(var_12)
+		var_13 := `Wait Times`
+		_, err = templBuffer.WriteString(var_13)
 		if err != nil {
 			return err
 		}
@@ -168,8 +206,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_13 := `Wait Times with Countries`
-		_, err = templBuffer.WriteString(var_13)
+		var_14 := `Wait Times with Countries`
+		_, err = templBuffer.WriteString(var_14)
 		if err != nil {
 			return err
 		}
@@ -177,8 +215,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_14 := `Tables`
-		_, err = templBuffer.WriteString(var_14)
+		var_15 := `Tables`
+		_, err = templBuffer.WriteString(var_15)
 		if err != nil {
 			return err
 		}
@@ -186,8 +224,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_15 := `Working table from ChatGPT`
-		_, err = templBuffer.WriteString(var_15)
+		var_16 := `Working table from ChatGPT`
+		_, err = templBuffer.WriteString(var_16)
 		if err != nil {
 			return err
 		}
@@ -195,8 +233,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_16 := `Table made with just Go/Templ`
-		_, err = templBuffer.WriteString(var_16)
+		var_17 := `Table made with just Go/Templ`
+		_, err = templBuffer.WriteString(var_17)
 		if err != nil {
 			return err
 		}
