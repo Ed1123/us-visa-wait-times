@@ -58,6 +58,8 @@ func main() {
 	}
 	r := mux.NewRouter()
 
+	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets/"))))
+
 	r.HandleFunc("/table-js", tableJS)
 	r.HandleFunc("/wait-times", waitTimes)
 	r.HandleFunc("/wait-times-with-country", waitTimesWithCountry)

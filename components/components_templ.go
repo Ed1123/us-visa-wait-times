@@ -12,6 +12,9 @@ import "bytes"
 import "github.com/Ed1123/us-visa-wait-times/usvisa"
 import "fmt"
 
+//<link href="/assets/css/style.css" rel="stylesheet" type="text/css"/>
+//<script src="/assets/js/simple-datatables.js" type="text/javascript"></script>
+
 func Table(cities []usvisa.CityWaitTime) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
 		templBuffer, templIsBuffer := w.(*bytes.Buffer)
@@ -25,12 +28,21 @@ func Table(cities []usvisa.CityWaitTime) templ.Component {
 			var_1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, err = templBuffer.WriteString("<table><thead><tr><th>")
+		_, err = templBuffer.WriteString("<head><link href=\"https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css\" rel=\"stylesheet\" type=\"text/css\"><script src=\"https://cdn.jsdelivr.net/npm/simple-datatables@latest\" type=\"text/javascript\">")
 		if err != nil {
 			return err
 		}
-		var_2 := `City`
+		var_2 := ``
 		_, err = templBuffer.WriteString(var_2)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</script></head><table id=\"table\"><thead><tr><th>")
+		if err != nil {
+			return err
+		}
+		var_3 := `City`
+		_, err = templBuffer.WriteString(var_3)
 		if err != nil {
 			return err
 		}
@@ -38,8 +50,8 @@ func Table(cities []usvisa.CityWaitTime) templ.Component {
 		if err != nil {
 			return err
 		}
-		var_3 := `Wait Time`
-		_, err = templBuffer.WriteString(var_3)
+		var_4 := `Wait Time`
+		_, err = templBuffer.WriteString(var_4)
 		if err != nil {
 			return err
 		}
@@ -52,8 +64,8 @@ func Table(cities []usvisa.CityWaitTime) templ.Component {
 			if err != nil {
 				return err
 			}
-			var var_4 string = city.CityName
-			_, err = templBuffer.WriteString(templ.EscapeString(var_4))
+			var var_5 string = city.CityName
+			_, err = templBuffer.WriteString(templ.EscapeString(var_5))
 			if err != nil {
 				return err
 			}
@@ -66,8 +78,8 @@ func Table(cities []usvisa.CityWaitTime) templ.Component {
 				if err != nil {
 					return err
 				}
-				var var_5 string = fmt.Sprint(*city.BusinessTourismVisitor.Days)
-				_, err = templBuffer.WriteString(templ.EscapeString(var_5))
+				var var_6 string = fmt.Sprint(*city.BusinessTourismVisitor.Days)
+				_, err = templBuffer.WriteString(templ.EscapeString(var_6))
 				if err != nil {
 					return err
 				}
@@ -80,8 +92,8 @@ func Table(cities []usvisa.CityWaitTime) templ.Component {
 				if err != nil {
 					return err
 				}
-				var var_6 string = string(*city.BusinessTourismVisitor.Message)
-				_, err = templBuffer.WriteString(templ.EscapeString(var_6))
+				var var_7 string = string(*city.BusinessTourismVisitor.Message)
+				_, err = templBuffer.WriteString(templ.EscapeString(var_7))
 				if err != nil {
 					return err
 				}
@@ -95,7 +107,21 @@ func Table(cities []usvisa.CityWaitTime) templ.Component {
 				return err
 			}
 		}
-		_, err = templBuffer.WriteString("</tbody></table>")
+		_, err = templBuffer.WriteString("</tbody><script>")
+		if err != nil {
+			return err
+		}
+		var_8 := `
+			const dataTable = new simpleDatatables.DataTable("#table", {
+				searchable: true,
+				sortable: true,
+			})
+		`
+		_, err = templBuffer.WriteString(var_8)
+		if err != nil {
+			return err
+		}
+		_, err = templBuffer.WriteString("</script></table>")
 		if err != nil {
 			return err
 		}
@@ -114,17 +140,17 @@ func Index() templ.Component {
 			defer templ.ReleaseBuffer(templBuffer)
 		}
 		ctx = templ.InitializeContext(ctx)
-		var_7 := templ.GetChildren(ctx)
-		if var_7 == nil {
-			var_7 = templ.NopComponent
+		var_9 := templ.GetChildren(ctx)
+		if var_9 == nil {
+			var_9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, err = templBuffer.WriteString("<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
 		if err != nil {
 			return err
 		}
-		var_8 := `US Visa Wait Times`
-		_, err = templBuffer.WriteString(var_8)
+		var_10 := `US Visa Wait Times`
+		_, err = templBuffer.WriteString(var_10)
 		if err != nil {
 			return err
 		}
@@ -132,7 +158,7 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_9 := `
+		var_11 := `
                 body {
                     font-family: 'Arial', sans-serif;
                     margin: 0;
@@ -162,7 +188,7 @@ func Index() templ.Component {
                     padding: 20px;
                 }
             `
-		_, err = templBuffer.WriteString(var_9)
+		_, err = templBuffer.WriteString(var_11)
 		if err != nil {
 			return err
 		}
@@ -170,8 +196,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_10 := `US Visa Wait Times`
-		_, err = templBuffer.WriteString(var_10)
+		var_12 := `US Visa Wait Times`
+		_, err = templBuffer.WriteString(var_12)
 		if err != nil {
 			return err
 		}
@@ -179,8 +205,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_11 := `Wait times for US visa appointments at consulates around the world.`
-		_, err = templBuffer.WriteString(var_11)
+		var_13 := `Wait times for US visa appointments at consulates around the world.`
+		_, err = templBuffer.WriteString(var_13)
 		if err != nil {
 			return err
 		}
@@ -188,8 +214,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_12 := `APIs`
-		_, err = templBuffer.WriteString(var_12)
+		var_14 := `APIs`
+		_, err = templBuffer.WriteString(var_14)
 		if err != nil {
 			return err
 		}
@@ -197,8 +223,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_13 := `Wait Times`
-		_, err = templBuffer.WriteString(var_13)
+		var_15 := `Wait Times`
+		_, err = templBuffer.WriteString(var_15)
 		if err != nil {
 			return err
 		}
@@ -206,8 +232,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_14 := `Wait Times with Countries`
-		_, err = templBuffer.WriteString(var_14)
+		var_16 := `Wait Times with Countries`
+		_, err = templBuffer.WriteString(var_16)
 		if err != nil {
 			return err
 		}
@@ -215,8 +241,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_15 := `Tables`
-		_, err = templBuffer.WriteString(var_15)
+		var_17 := `Tables`
+		_, err = templBuffer.WriteString(var_17)
 		if err != nil {
 			return err
 		}
@@ -224,8 +250,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_16 := `Working table from ChatGPT`
-		_, err = templBuffer.WriteString(var_16)
+		var_18 := `Made with Go templating`
+		_, err = templBuffer.WriteString(var_18)
 		if err != nil {
 			return err
 		}
@@ -233,8 +259,8 @@ func Index() templ.Component {
 		if err != nil {
 			return err
 		}
-		var_17 := `Table made with just Go/Templ`
-		_, err = templBuffer.WriteString(var_17)
+		var_19 := `Made with Go/Templ`
+		_, err = templBuffer.WriteString(var_19)
 		if err != nil {
 			return err
 		}

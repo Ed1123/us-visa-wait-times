@@ -4,26 +4,36 @@ import "github.com/Ed1123/us-visa-wait-times/usvisa"
 import "fmt"
 
 templ Table(cities []usvisa.CityWaitTime) {
-	<table>
-        <thead>
-            <tr>
-                <th>City</th>
-                <th>Wait Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            for _, city := range cities {
-                <tr>
-                    <td>{ city.CityName }</td>
-                    if city.BusinessTourismVisitor.Days != nil {
-                        <td>{ fmt.Sprint(*city.BusinessTourismVisitor.Days) }</td>
-                    } else if city.BusinessTourismVisitor.Message != nil {
-                        <td>{ string(*city.BusinessTourismVisitor.Message) }</td>
-                    }
-                </tr>
-	        }
-        </tbody>
-    </table>
+	<head>
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css"/>
+		<script src="/assets/js/simple-datatables.js" type="text/javascript"></script>
+	</head>
+	<table id="table">
+		<thead>
+			<tr>
+				<th>City</th>
+				<th>Wait Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			for _, city := range cities {
+				<tr>
+					<td>{ city.CityName }</td>
+					if city.BusinessTourismVisitor.Days != nil {
+						<td>{ fmt.Sprint(*city.BusinessTourismVisitor.Days) }</td>
+					} else if city.BusinessTourismVisitor.Message != nil {
+						<td>{ string(*city.BusinessTourismVisitor.Message) }</td>
+					}
+				</tr>
+			}
+		</tbody>
+		<script>
+			const dataTable = new simpleDatatables.DataTable("#table", {
+				searchable: true,
+				sortable: true,
+			})
+		</script>
+	</table>
 }
 
 templ Index() {
@@ -31,7 +41,7 @@ templ Index() {
 		<head>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>US Visa Wait Times</title>
-            <style>
+			<style>
                 body {
                     font-family: 'Arial', sans-serif;
                     margin: 0;
@@ -63,26 +73,26 @@ templ Index() {
             </style>
 		</head>
 		<body>
-        <header>
-            <h1>US Visa Wait Times</h1>
-            <p>Wait times for US visa appointments at consulates around the world.</p>
-        </header>
-        <section>
-            <div>
-                <h2>APIs</h2>
-			    <ul>
-				    <li><a href="/wait-times">Wait Times</a></li>
-				    <li><a href="/wait-times-with-country">Wait Times with Countries</a></li>
-			    </ul>
-            </div>
-            <div>
-                <h2>Tables</h2>
-			    <ul>
-                    <li><a href="/table-js">Working table from ChatGPT</a></li>
-                    <li><a href="/table">Table made with just Go/Templ</a></li> 
-			    </ul>
-            </div>
-        </section>
+			<header>
+				<h1>US Visa Wait Times</h1>
+				<p>Wait times for US visa appointments at consulates around the world.</p>
+			</header>
+			<section>
+				<div>
+					<h2>APIs</h2>
+					<ul>
+						<li><a href="/wait-times">Wait Times</a></li>
+						<li><a href="/wait-times-with-country">Wait Times with Countries</a></li>
+					</ul>
+				</div>
+				<div>
+					<h2>Tables</h2>
+					<ul>
+						<li><a href="/table-js">Made with Go templating</a></li>
+						<li><a href="/table">Made with Go/Templ (WIP)</a></li>
+					</ul>
+				</div>
+			</section>
 		</body>
 	</html>
 }
